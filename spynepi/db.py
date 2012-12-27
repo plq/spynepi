@@ -3,6 +3,9 @@ from collections import namedtuple
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.event import listen
+from sqlalchemy.schema import DDL
+from sqlalchemy.schema import UniqueConstraint
 
 from spyne.model.complex import table
 from spyne.model.complex import Array
@@ -61,7 +64,10 @@ class Release(TableModel):
 
 class Package(TableModel):
     __tablename__ = "%s_package"  % TABLE_PREFIX
-    __table_args__ = {"sqlite_autoincrement": True}
+    __table_args__ = (
+        (UniqueConstraint("package_name"),),
+        {"sqlite_autoincrement": True},
+    )
 
     id = Integer32(primary_key=True)
     package_name = String(40)
@@ -74,6 +80,10 @@ class Package(TableModel):
     owners = Array(Person).store_as(table(right="owner_id"))
     releases = Array(Release).store_as(table(right="package_id"))
 
+# this is here because the package_id column is not materialized until the
+# package table is created.
+Release.Attributes.sqla_table.append_constraint(
+                            UniqueConstraint("package_id", "release_version"))
 
 def init_database(connection_string):
     db = create_engine(connection_string)
@@ -86,5 +96,4 @@ def init_database(connection_string):
     import spynepi.entity.project
 
     TableModel.Attributes.sqla_metadata.create_all(checkfirst=True)
-
     return DatabaseHandle(db=db, Session=Session)
