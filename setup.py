@@ -26,7 +26,7 @@ setup(
     keywords=('pypi', 'spyne', 'wsgi', 'rpc', 'http'),
     author='Ugurcan Ergun',
     author_email='ugurcanergn@gmail.com',
-    url='http://github.com/ugurcan377/spynepi',
+    url='http://github.com/arskom/spynepi',
     license='GPL',
 
     install_requires=[
