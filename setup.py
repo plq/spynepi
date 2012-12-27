@@ -32,7 +32,11 @@ setup(
     install_requires=[
         "spyne>=2.10", "sqlalchemy<0.8", "werkzeug", "twisted",
     ],
-    include_package_data=True,
+
+    package_data={
+        'spynepi.const.template': ['download.html'],
+    },
+
     entry_points = {
         'console_scripts': [
             '%(p)s_daemon=%(p)s.main:main' % {'p': PROJECT_NAME},
