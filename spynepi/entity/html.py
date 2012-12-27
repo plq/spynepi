@@ -70,14 +70,14 @@ class IndexService(ServiceBase):
 
 
 def cache_package(spec, own_url):
+    import ConfigParser
+
     from glob import glob
     from setuptools.command.easy_install import main as easy_install
     from distutils.core import run_setup
-    import ConfigParser
 
     path = tempfile.mkdtemp('.spynepi')
-    easy_install(["--user", "-U", "--editable", "--build-directory",
-                                                           path, spec])
+    easy_install(["--user", "-U", "--editable", "--build-directory", path, spec])
 
     if os.environ.has_key('HOME'):
         rc = os.path.join(os.environ['HOME'], '.pypirc')
