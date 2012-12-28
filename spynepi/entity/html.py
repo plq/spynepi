@@ -38,6 +38,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from spyne.decorator import rpc
 from spyne.error import RequestNotAllowed
+from spyne.error import ResourceNotFoundError
 from spyne.model.binary import File
 from spyne.model.complex import Array
 from spyne.model.primitive import AnyUri
