@@ -104,39 +104,41 @@ class RootService(ServiceBase):
                 f.write(d)
             f.close()
 
+
         body = ctx.in_body_doc
 
-        #TO-DO Add a method check
-        check = ctx.udc.session.query(Package).filter_by(package_name=name).all()
-        if check != []:
-            exists = True
-            for rel in check[0].releases:
-                if rel.release_version == version and os.path.exists(pth) == True:
+        package_query = ctx.udc.session.query(Package).filter_by(package_name=name)
+        package = package_query.first()
+        release = None
+        if package is not None:
+            release = package_query.join(Release).filter_by(release_version=version).first()
+            if release is not None:
+                if os.path.exists(pth) == True:
                     raise ArgumentError()
 
-        if body[":action"][0] == "submit":
-            if exists:
-                check[0].releases.append(generate_release())
 
-            else:
+        if body[":action"][0] == "submit":
+            if package is None:
                 package = generate_package()
                 package.owners.append(generate_person())
-                package.releases.append(generate_release())
                 ctx.udc.session.add(package)
-                ctx.udc.session.flush()
+
+            if release is None:
+                package.releases.append(generate_release())
+
             ctx.udc.session.commit()
 
         if body[":action"][0] == "file_upload":
             if exists:
-                rel = ctx.udc.session.query(Release).join(Package).filter(
+                release = ctx.udc.session.query(Release).join(Package).filter(
                     sql.and_(
                         Package.package_name == name,
                         Release.release_version == version)
                     ).first()
 
-                if rel is None:
+                if release is None:
                     raise ResourceNotFoundError(name)
-                rel.distributions.append(generate_dist())
+                release.distributions.append(generate_dist())
                 package_content()
 
             else:
