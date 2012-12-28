@@ -180,6 +180,12 @@ class HtmlService(ServiceBase):
             download.link.attrib["href"] = "%s/doap.rdf" % (release.rdf_about)
             download.h1 = '%s-%s' % (project_name, version)
 
+            if len(release.distributions) == 0:
+                cache_package(project_name, reconstruct_url(ctx.transport.req_env,
+                                                  path=False, query_string=False))
+                raise ResourceNotFoundError( str("No distribution found for "
+                                          "'%s-%s'" % (project_name, version)) )
+
             download.a = release.distributions[0].content_name
             download.a.attrib["href"] = "/%s/%s#md5=%s" % (
                     release.distributions[0].content_path,
