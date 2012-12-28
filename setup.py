@@ -15,7 +15,7 @@ setup(
     name=PROJECT_NAME,
     packages=find_packages(),
     version=VERSION,
-    description="This is a caching PyPI implementation that uses spyne",
+    description="This is a caching PyPI implementation that uses Spyne",
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
