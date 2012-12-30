@@ -1,10 +1,12 @@
 
 from collections import namedtuple
 
+from sqlalchemy import sql
+
 from sqlalchemy import create_engine
+from sqlalchemy.orm import mapper
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.event import listen
-from sqlalchemy.schema import DDL
+from sqlalchemy.orm import relation
 from sqlalchemy.schema import UniqueConstraint
 
 from spyne.model.complex import table
@@ -80,10 +82,27 @@ class Package(TableModel):
     owners = Array(Person).store_as(table(right="owner_id"))
     releases = Array(Release).store_as(table(right="package_id"))
 
-# this is here because the package_id column is not materialized until the
-# package table is created.
-Release.Attributes.sqla_table.append_constraint(
+
+def patch_models():
+    # this is here because the package_id column is not materialized until the
+    # package table is created.
+    Release.Attributes.sqla_table.append_constraint(
                             UniqueConstraint("package_id", "release_version"))
+
+    package_m = Package.Attributes.sqla_mapper
+
+    latest_releases = sql.select([sql.func.max(Release.id).label('release_id')],
+                                     group_by=[Release.package_id]).alias()
+
+    latest_release = Release.Attributes.sqla_table.select(
+                Release.id == latest_releases.c.release_id).alias('latest_release')
+
+    package_m.add_property('latest_release',
+        relation(mapper(Release, latest_release, non_primary=True),
+                uselist=False, viewonly=True)
+    )
+
+patch_models()
 
 def init_database(connection_string):
     db = create_engine(connection_string)
