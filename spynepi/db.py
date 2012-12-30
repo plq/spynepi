@@ -28,8 +28,8 @@ class Person(TableModel):
     __table_args__ = {"sqlite_autoincrement": True}
 
     id = Integer32(primary_key=True)
-    person_name = String(60)
-    person_email = String(60)
+    person_name = String(64)
+    person_email = String(128)
 
 
 class Distribution(TableModel):
@@ -76,7 +76,7 @@ class Package(TableModel):
     package_cdate = Date
     package_description = Unicode
     rdf_about = Unicode(256)
-    package_license = Unicode(40)
+    package_license = Unicode(256)
     package_home_page = String(256)
 
     owners = Array(Person).store_as(table(right="owner_id"))
