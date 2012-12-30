@@ -94,7 +94,7 @@ class HtmlService(ServiceBase):
 
             if len(release.distributions) == 0:
                 cache_package("%s==%s" % (project_name, version), own_url)
-                ctx.udc.session.refresh(release, ['distributions'])
+                ctx.udc.session.refresh(release)
 
             download.link.attrib["href"] = "%s/doap.rdf" % (release.rdf_about)
             download.h1 = '%s-%s' % (project_name, version)

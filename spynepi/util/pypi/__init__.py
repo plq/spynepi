@@ -24,6 +24,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 import os
+import sys
 import shutil
 import tempfile
 import subprocess
@@ -79,15 +80,12 @@ def _generate_pypirc(own_url):
 
 
 def cache_package(spec, own_url):
-    # parse spec
     try:
         spec = Requirement.parse(spec)
 
     except ValueError:
-        raise ArgumentError(
-            "Not a URL, existing file, or requirement spec: %r" %
-            (spec,)
-        )
+        raise ArgumentError("Not a URL, existing file, or requirement spec: %r"
+                                                                      % (spec,))
 
     try:
         # download and unpack source package
@@ -122,12 +120,12 @@ def cache_package(spec, own_url):
         lib_dir = os.path.dirname(setups[0])
         command = ["python", "setup.py", "register", "-r", REPO_NAME]
         logger.info('calling %r', command)
-        subprocess.call(command, cwd=lib_dir)
+        subprocess.call(command, cwd=lib_dir, stdout=sys.stdout)
 
         # self-upload the package
         command = ["python", "-m", "spynepi.util.pypi.upload", archive_path]
         logger.info('calling %r', command)
-        subprocess.call(command, cwd=lib_dir)
+        subprocess.call(command, cwd=lib_dir, stdin=sys.stdin, stdout=sys.stdout)
 
     finally:
         shutil.rmtree(path)

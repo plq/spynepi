@@ -4,7 +4,8 @@ import sys
 
 import distutils.core
 
-print os.getcwd()
+if len(sys.argv) < 1:
+    raise SystemExit("Need at least the package to upload")
 
 #
 # run_setup starts here
@@ -17,7 +18,7 @@ l = {}
 try:
     try:
         sys.argv = [script_name]
-        execfile(script_name)# in g, l
+        execfile(script_name,g)
     finally:
         sys.argv = save_argv
         _setup_stop_after = None
@@ -36,7 +37,6 @@ dist = distutils.core._setup_distribution
 # run_setup ends here
 #
 
-print sys.argv
 dist.commands = ['upload']
 dist.dist_files = [('command', 'version', os.path.abspath(sys.argv[1]))]
 dist.command_options = {
