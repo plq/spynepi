@@ -39,8 +39,8 @@ class Distribution(TableModel):
     id = Integer32(primary_key=True)
 
     # TO-DO Add Content data
-    content_name = String(256)
-    content_path = String(256)
+    file_name = String(256)
+    file_path = String(256)
     dist_download_url = String(256)
     dist_comment = String(256)
     dist_file_type = String(256)
