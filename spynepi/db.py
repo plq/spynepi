@@ -28,8 +28,8 @@ class Person(TableModel):
     __table_args__ = {"sqlite_autoincrement": True}
 
     id = Integer32(primary_key=True)
-    person_name = String(64)
-    person_email = String(128)
+    person_name = String(256)
+    person_email = String(256)
 
 
 class Distribution(TableModel):
