@@ -1,4 +1,3 @@
-import os.path
 # encoding: utf8
 #
 # (C) Copyright Arskom Ltd. <info@arskom.com.tr>
@@ -23,8 +22,8 @@ import os.path
 import logging
 logger = logging.getLogger(__name__)
 
-import datetime
 import os
+import datetime
 
 from sqlalchemy import sql
 
