@@ -1,3 +1,8 @@
+
+0.4
+===
+* Major improvements to the package caching logic.
+
 0.3
 ===
 * Add package caching
@@ -10,5 +15,4 @@
 
 0.1
 ===
-
 * First working version

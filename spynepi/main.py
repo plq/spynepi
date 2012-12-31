@@ -22,6 +22,7 @@
 import logging
 logger = logging.getLogger(__name__)
 
+import os
 import sys
 
 from twisted.internet import reactor
@@ -82,6 +83,9 @@ def main(connection_string=DB_CONNECTION_STRING):
     logging.basicConfig(level=logging.DEBUG)
     logging.getLogger('spyne.protocol.xml').setLevel(logging.DEBUG)
     #logging.getLogger('sqlalchemy.engine.base.Engine').setLevel(logging.DEBUG)
+
+    from spynepi.const import FILES_PATH
+    RootService.FILES_ROOT = os.path.abspath(FILES_PATH)
 
     index_app = MyApplication([RootService, IndexService], "http://usefulinc.com/ns/doap#",
                             in_protocol=HttpRpc(), out_protocol=HtmlTable())

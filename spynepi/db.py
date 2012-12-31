@@ -1,8 +1,13 @@
 
 from collections import namedtuple
 
+from sqlalchemy import sql
+
 from sqlalchemy import create_engine
+from sqlalchemy.orm import mapper
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relation
+from sqlalchemy.schema import UniqueConstraint
 
 from spyne.model.complex import table
 from spyne.model.complex import Array
@@ -23,8 +28,8 @@ class Person(TableModel):
     __table_args__ = {"sqlite_autoincrement": True}
 
     id = Integer32(primary_key=True)
-    person_name = String(60)
-    person_email = String(60)
+    person_name = String(256)
+    person_email = String(256)
 
 
 class Distribution(TableModel):
@@ -34,8 +39,8 @@ class Distribution(TableModel):
     id = Integer32(primary_key=True)
 
     # TO-DO Add Content data
-    content_name = String(256)
-    content_path = String(256)
+    file_name = String(256)
+    file_path = String(256)
     dist_download_url = String(256)
     dist_comment = String(256)
     dist_file_type = String(256)
@@ -61,19 +66,43 @@ class Release(TableModel):
 
 class Package(TableModel):
     __tablename__ = "%s_package"  % TABLE_PREFIX
-    __table_args__ = {"sqlite_autoincrement": True}
+    __table_args__ = (
+        (UniqueConstraint("package_name"),),
+        {"sqlite_autoincrement": True},
+    )
 
     id = Integer32(primary_key=True)
     package_name = String(40)
     package_cdate = Date
     package_description = Unicode
     rdf_about = Unicode(256)
-    package_license = Unicode(40)
+    package_license = Unicode(256)
     package_home_page = String(256)
 
     owners = Array(Person).store_as(table(right="owner_id"))
     releases = Array(Release).store_as(table(right="package_id"))
 
+
+def patch_models():
+    # this is here because the package_id column is not materialized until the
+    # package table is created.
+    Release.Attributes.sqla_table.append_constraint(
+                            UniqueConstraint("package_id", "release_version"))
+
+    package_m = Package.Attributes.sqla_mapper
+
+    latest_releases = sql.select([sql.func.max(Release.id).label('release_id')],
+                                     group_by=[Release.package_id]).alias()
+
+    latest_release = Release.Attributes.sqla_table.select(
+                Release.id == latest_releases.c.release_id).alias('latest_release')
+
+    package_m.add_property('latest_release',
+        relation(mapper(Release, latest_release, non_primary=True),
+                uselist=False, viewonly=True)
+    )
+
+patch_models()
 
 def init_database(connection_string):
     db = create_engine(connection_string)
@@ -86,5 +115,4 @@ def init_database(connection_string):
     import spynepi.entity.project
 
     TableModel.Attributes.sqla_metadata.create_all(checkfirst=True)
-
     return DatabaseHandle(db=db, Session=Session)

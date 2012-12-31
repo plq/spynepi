@@ -1,6 +1,7 @@
 
 # The database connection string must be sqlalchemy compatible
 DB_CONNECTION_STRING = "sqlite:///spynepi.db"
+DB_CONNECTION_STRING = "postgres://postgres:@localhost:5432/spynepi_plq"
 # The path(absolute recommended) where package files will be saved
 FILES_PATH = 'files' # files adds automatically
 # The server address
