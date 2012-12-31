@@ -97,6 +97,10 @@ deployments in protected networks. Patches are welcome!
 See the issue tracker at github (https://github.com/arskom/spynepi/issues)
 for an up-to-date list.
 
+A temporary nuisance is the fact that Spynepi uses features from Spyne-2.10.0
+which is not yet released. You should clone git://github.com/arskom/spyne and
+install it first before attempting to install Spynepi
+
 Contributing
 ------------
 
