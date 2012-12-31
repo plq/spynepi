@@ -29,11 +29,18 @@ from twisted.internet import reactor
 from twisted.web.server import Site
 from twisted.web.wsgi import WSGIResource
 
+from sqlalchemy.orm.exc import NoResultFound
+
 from spyne.application import Application
+from spyne.error import ResourceNotFoundError
 from spyne.protocol.xml import XmlDocument
 from spyne.protocol.html import HtmlTable
 from spyne.protocol.http import HttpRpc
 from spyne.server.wsgi import WsgiApplication
+
+from werkzeug.exceptions import HTTPException
+from werkzeug.routing import Map
+from werkzeug.routing import Rule
 
 from spynepi.const import DB_CONNECTION_STRING
 from spynepi.const import HOST
@@ -43,13 +50,6 @@ from spynepi.entity.html import IndexService
 from spynepi.entity.html import HtmlService
 from spynepi.entity.project import RdfService
 from spynepi.entity.root import RootService
-
-from werkzeug.exceptions import HTTPException
-from werkzeug.routing import Map
-from werkzeug.routing import Rule
-
-from sqlalchemy.orm.exc import NoResultFound
-from spyne.error import ResourceNotFoundError
 
 
 def TWsgiApplication(url_map):
