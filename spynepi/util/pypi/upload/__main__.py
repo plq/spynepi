@@ -8,7 +8,8 @@ if len(sys.argv) < 1:
     raise SystemExit("Need at least the package to upload")
 
 #
-# run_setup starts here
+# run_setup starts here. It was copied because we needn't pass locals dict to
+# execfile
 distutils.core._setup_stop_after = 'init'
 script_name = 'setup.py'
 
