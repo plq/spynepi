@@ -104,7 +104,7 @@ class HtmlService(ServiceBase):
             download.link.attrib["href"] = "%s/doap.rdf" % (release.rdf_about)
             download.h1 = '%s-%s' % (project_name, version)
             download.a = release.distributions[0].file_name
-            download.a.attrib["href"] = "/%s/%s#md5=%s" % (
+            download.a.attrib["href"] = "/files/%s/%s#md5=%s" % (
                     release.distributions[0].file_path,
                     release.distributions[0].file_name,
                     release.distributions[0].dist_md5,
@@ -122,7 +122,7 @@ class HtmlService(ServiceBase):
             download.link.attrib["href"] = '%s/doap.rdf' % (package.latest_release.rdf_about)
             download.h1 = project_name
             download.a = package.latest_release.distributions[0].file_name
-            download.a.attrib["href"] = "/%s/%s#md5=%s" % (
+            download.a.attrib["href"] = "/files/%s/%s#md5=%s" % (
                     package.latest_release.distributions[0].file_path,
                     package.latest_release.distributions[0].file_name,
                     package.latest_release.distributions[0].dist_md5
@@ -133,7 +133,7 @@ class HtmlService(ServiceBase):
     @rpc(Unicode, Unicode, Unicode, _returns=File, _patterns=[
                     HttpPattern("/files/<project_name>/<version>/<file_name>")])
     def download_file(ctx, project_name, version, file_name):
-        repository_path = os.path.abspath(os.path.join(FILES_PATH,"files"))
+        repository_path = os.path.abspath(os.path.join(FILES_PATH))
         file_path = os.path.join(repository_path, project_name, version, file_name)
         file_path = os.path.abspath(file_path)
 

@@ -138,7 +138,7 @@ class RdfService(ServiceBase):
                         "created": rel.release_cdate,
                         "revision": rel.release_version,
                         'file-release': rel.distributions[0].file_name,
-                        "resource": '%s/%s#%s' % (
+                        "resource": 'files/%s/%s#%s' % (
                             rel.distributions[0].file_path,
                             rel.distributions[0].file_name,
                             rel.distributions[0].dist_md5,
