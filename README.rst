@@ -17,6 +17,7 @@ and Twisted as wsgi server:
 * Twisted: http://twistedmatrix.com/
 * SQLAlchemy: http://sqlalchemy.org
 * Werkzeug: http://werkzeug.pocoo.org/
+* Docutils: http://pypi.python.org/pypi/docutils
 
 Installation
 ------------

@@ -1,4 +1,8 @@
 
+0.5
+===
+* Add support to parse descriptions.
+
 0.4
 ===
 * Major improvements to the package caching logic.
