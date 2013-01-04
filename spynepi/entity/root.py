@@ -72,7 +72,7 @@ class RootService(ServiceBase):
             md5_digest, filetype, pyversion, summary, version, protcol_version, # <= this is not a typo
             action):
 
-        pth = os.path.join("files", name, version)
+        pth = os.path.join(name, version)
 
         def generate_package():
             return Package(
@@ -101,7 +101,7 @@ class RootService(ServiceBase):
 
         def write_package_content(file_path):
             if not os.path.exists(path):
-                os.makedirs(pth)
+                os.makedirs(os.path.dirname(file_path))
 
             f = open(file_path,"w")
 
