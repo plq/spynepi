@@ -16,7 +16,7 @@ script_name = 'setup.py'
 save_argv = sys.argv
 g = {
     '__file__': script_name, # for those who call os.path.dirname(__file__)
-    '__name__': '__main__'   # for those who call if __name__ == '__main__':
+    '__name__': '__main__'   # for those who have if __name__ == '__main__':
 }
 
 l = {}

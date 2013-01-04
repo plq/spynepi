@@ -107,13 +107,13 @@ def cache_package(spec, own_url):
         if not setups:
             raise ValidationError(
                 "Couldn't find a setup script in %r editable distribution: %r" %
-                                                    (spec, os.path.join(path,'*'))
+                                    (spec, os.path.join(path,'*', 'setup.py'))
             )
 
         if len(setups)>1:
             raise ValidationError(
                 "Multiple setup scripts in found in %r editable distribution: %r" %
-                                                    (spec, setups)
+                                    (spec, setups)
             )
 
         # self-register the package.

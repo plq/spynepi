@@ -23,6 +23,7 @@
 from spyne.decorator import rpc
 from spyne.model.complex import ComplexModel
 from spyne.model.complex import XmlAttribute
+from spyne.model.primitive import AnyHtml
 from spyne.model.primitive import AnyUri
 from spyne.model.primitive import Date
 from spyne.model.primitive import String
@@ -105,7 +106,7 @@ class Index(ComplexModel):
     _type_info = odict([
         ("Updated", Date),
         ("Package", AnyUri),
-        ("Description", String),
+        ("Description", AnyHtml),
     ])
 
 
