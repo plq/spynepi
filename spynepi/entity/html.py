@@ -133,7 +133,7 @@ class HtmlService(ServiceBase):
     @rpc(Unicode, Unicode, Unicode, _returns=File, _patterns=[
                     HttpPattern("/files/<project_name>/<version>/<file_name>")])
     def download_file(ctx, project_name, version, file_name):
-        repository_path = os.path.abspath(os.path.join(FILES_PATH,"files"))
+        repository_path = os.path.abspath(os.path.join(FILES_PATH))
         file_path = os.path.join(repository_path, project_name, version, file_name)
         file_path = os.path.abspath(file_path)
 
