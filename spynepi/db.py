@@ -92,10 +92,10 @@ class Package(TableModel):
     )
 
     id = Integer32(primary_key=True)
+    rdf_about = Unicode(256)
     package_name = String(40)
     package_cdate = Date
     package_description = Unicode
-    rdf_about = Unicode(256)
     package_license = Unicode(256)
     package_home_page = String(256)
 
@@ -123,6 +123,7 @@ def patch_models():
     )
 
 patch_models()
+
 
 def init_database(connection_string):
     db = create_engine(connection_string)

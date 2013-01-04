@@ -50,6 +50,7 @@ from spynepi.entity.project import Release
 from spynepi.db import Package
 from spynepi.db import Release
 
+from lxml import html
 
 TPL_DOWNLOAD = os.path.abspath(resource_filename("spynepi.const.template",
                                                                "download.html"))
@@ -58,12 +59,16 @@ TPL_DOWNLOAD = os.path.abspath(resource_filename("spynepi.const.template",
 class IndexService(ServiceBase):
     @rpc (_returns=Array(Index), _patterns=[HttpPattern("/",verb="GET")])
     def index(ctx):
-        return [Index(
+        return [
+            Index(
                 Updated=package.package_cdate,
-                Package=AnyUri.Value(text=package.package_name,
-                    href=package.latest_release.rdf_about),
-                Description=package.package_description,
-            ) for package in ctx.udc.session.query(Package)]
+                Package=AnyUri.Value(
+                    text=package.package_name,
+                    href=package.latest_release.rdf_about
+                ),
+                Description=html.fromstring(package.package_description),
+            ) for package in ctx.udc.session.query(Package)
+        ]
 
 
 class HtmlService(ServiceBase):

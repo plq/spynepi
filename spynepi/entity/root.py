@@ -19,6 +19,7 @@
 # MA 02110-1301, USA.
 #
 
+from spynepi.util.description import process_description
 import logging
 logger = logging.getLogger(__name__)
 
@@ -77,7 +78,7 @@ class RootService(ServiceBase):
             return Package(
                     package_name=name,
                     package_cdate=datetime.date.today(),
-                    package_description=description,
+                    package_description=process_description(description, 'utf8'),
                     rdf_about=os.path.join("/", name),
                     package_license=license,
                     package_home_page=home_page
@@ -100,7 +101,7 @@ class RootService(ServiceBase):
 
         def write_package_content(file_path):
             if not os.path.exists(path):
-                os.makedirs(path)
+                os.makedirs(pth)
 
             f = open(file_path,"w")
 
