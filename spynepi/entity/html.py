@@ -104,7 +104,7 @@ class HtmlService(ServiceBase):
             download.link.attrib["href"] = "%s/doap.rdf" % (release.rdf_about)
             download.h1 = '%s-%s' % (project_name, version)
             download.a = release.distributions[0].file_name
-            download.a.attrib["href"] = "/%s/%s#md5=%s" % (
+            download.a.attrib["href"] = "/files/%s/%s#md5=%s" % (
                     release.distributions[0].file_path,
                     release.distributions[0].file_name,
                     release.distributions[0].dist_md5,
