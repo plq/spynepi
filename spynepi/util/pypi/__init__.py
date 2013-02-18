@@ -74,7 +74,7 @@ def _generate_pypirc(own_url):
     except ConfigParser.NoOptionError:
         index_servers = [REPO_NAME]
 
-    config.set('distutils', 'index-servers', '\n'.join(index_servers))
+    config.set('distutils', 'index-servers', '\n    '.join(index_servers))
 
     config.write(open(rc,'w'))
 
@@ -112,7 +112,7 @@ def cache_package(spec, own_url):
 
         if len(setups)>1:
             raise ValidationError(
-                "Multiple setup scripts in found in %r editable distribution: %r" %
+                "Multiple setup scripts found in %r editable distribution: %r" %
                                     (spec, setups)
             )
 
