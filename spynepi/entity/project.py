@@ -92,13 +92,13 @@ class Project(ComplexModel):
     __namespace__ = "http://usefulinc.com/ns/doap#"
 
     _type_info = odict([
-        ('about', RdfAbout(String, ns="http://www.w3.org/1999/02/22-rdf-syntax-ns#")),
+        #('about', RdfAbout(String, ns="http://www.w3.org/1999/02/22-rdf-syntax-ns#")),
         ('name', String),
         ('created', Date),
         ('shortdesc', Unicode),
         ('homepage', String),
         ('developer', Developer),
-        ('release', Release.customize(max_occurs=float('inf'))),
+        #('release', Release.customize(max_occurs=float('inf'))),
     ])
 
 
