@@ -39,7 +39,7 @@ setup(
     license='GPL',
 
     install_requires=[
-        "spyne>=2.10","sqlalchemy<0.8", "werkzeug", "twisted", 'docutils'
+        "spyne>=2.10","sqlalchemy", "werkzeug", "twisted", 'docutils'
     ],
 
     include_package_data=True,
