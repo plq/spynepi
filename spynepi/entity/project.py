@@ -20,22 +20,15 @@
 # MA 02110-1301, USA.
 #
 
+from spyne.service import ServiceBase
 from spyne.decorator import rpc
 from spyne.model.complex import ComplexModel
 from spyne.model.complex import XmlAttribute
-from spyne.model.primitive import AnyHtml
-from spyne.model.primitive import AnyUri
-from spyne.model.primitive import Date
-from spyne.model.primitive import String
-from spyne.model.primitive import Unicode
-from spyne.service import ServiceBase
+from spyne.model.primitive import AnyHtml, AnyUri, Date, String, Unicode
 from spyne.protocol.http import HttpPattern
-
 from spyne.util.odict import odict
 
 from spynepi.db import Package
-from spynepi.db import Person
-from spynepi.db import Release
 
 
 class RdfResource(XmlAttribute):
@@ -53,7 +46,10 @@ class Version(ComplexModel):
         #ns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         #TO-DO Add path#md5 -> rdf:resource as atrribute
         ('file-release', String),
-        ("resource", RdfResource(String, ns="http://www.w3.org/1999/02/22-rdf-syntax-ns#", attribute_of="file-release")),
+        ("resource", RdfResource(Unicode,
+            ns="http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            attribute_of="file-release",
+        )),
     ])
 
 
@@ -127,7 +123,7 @@ class RdfService(ServiceBase):
             developer=Developer(
                 Person=Person(
                     name=package.owners[0].person_name,
-                    mbox=package.owners[0].person_email
+                    mbox=package.owners[0].person_email,
                 )
             ),
             release=(

@@ -34,20 +34,13 @@ from sqlalchemy.orm.exc import NoResultFound
 from spyne.application import Application
 from spyne.error import ResourceNotFoundError
 from spyne.protocol.xml import XmlDocument
-from spyne.protocol.html import HtmlTable
 from spyne.protocol.http import HttpRpc
+from spyne.protocol.html import HtmlColumnTable
 from spyne.server.wsgi import WsgiApplication
 
-from werkzeug.exceptions import HTTPException
-from werkzeug.routing import Map
-from werkzeug.routing import Rule
-
-from spynepi.const import DB_CONNECTION_STRING
-from spynepi.const import HOST
-from spynepi.const import PORT
+from spynepi.const import DB_CONNECTION_STRING, HOST, PORT
 from spynepi.db import init_database
-from spynepi.entity.html import IndexService
-from spynepi.entity.html import HtmlService
+from spynepi.entity.html import IndexService, HtmlService
 from spynepi.entity.project import RdfService
 from spynepi.entity.root import RootService
 
@@ -57,7 +50,7 @@ def TWsgiApplication(url_map):
         urls = url_map.bind_to_environ(environ)
         try:
             endpoint, args = urls.match()
-        except HTTPException, e:
+        except HTTPException as e:
             return e(environ, start_response)
 
         return endpoint(environ, start_response, wsgi_url)
@@ -72,7 +65,7 @@ class MyApplication(Application):
         try:
             return Application.call_wrapper(self, ctx)
 
-        except NoResultFound, e:
+        except NoResultFound as e:
             logger.exception(e)
             ctx.out_string = ["Resource not found"]
             raise ResourceNotFoundError() # Return HTTP 404
@@ -93,7 +86,7 @@ def main(connection_string=DB_CONNECTION_STRING):
     rdf_app = MyApplication([RdfService], "http://usefulinc.com/ns/doap#",
                             in_protocol=HttpRpc(), out_protocol=XmlDocument())
 
-    html_app = MyApplication([HtmlService],"http://usefulinc.com/ns/doap#",
+    html_app = MyApplication([HtmlService], "http://usefulinc.com/ns/doap#",
                             in_protocol=HttpRpc(), out_protocol=HttpRpc())
 
     db_handle = init_database(connection_string)
